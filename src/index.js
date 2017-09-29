@@ -1,44 +1,48 @@
 module.exports = function zeros(expression) {
-
-	var arr=expression.split("*")
-	var stack=""
-function Version(v){
- 	var f = 1;
- 	for(i = 2; i <= v;i++){
- 	 	f *= i;
-  		stack += String(f).match(/0*$/)[0];
-  		while(f%10 == 0){
-  			f /= 10
-  		}
- 		f = String(f);
-  		f = Number(f[f.length-1])
- 	}
-	return f
-}
-function Version2 (v){
-	var f=1
-	for (i=v%2==0?2:3; i<=v; i+=2){
-		f *= i;
-  		stack += String(f).match(/0*$/)[0];
-  		while(f%10 == 0){
-  			f /= 10
-  		}
- 		f = String(f);
-  		f = Number(f[f.length-1])
- 	}
-	return f		
-}
-arr=arr.map(function (v,i)
-{
-	if(v.indexOf("!!")==-1){
-		return Version(parseInt(v))
-	}else{
-		return Version2(parseInt(v))
+var getDigitsForMultiplication = function(number, exclamationCount) {
+	var digits = [];
+	while(number > 0) {
+		digits.push(number);
+		number = number - exclamationCount;
 	}
-})
-var numb=arr.reduce(function (a,b){
-return a*=b})
-while(numb%10==0)
-	{stack +="0"; numb=numb/10}
-return stack.length
+	return digits.reverse(); // to match the order in task, rly doesnt mttr
+}
+
+var getExclamationCount = function(string) {
+	var substrings = string.split("!");
+	return substrings.length - 1;
+}
+
+var multiplyNumbersInArray = function(numbers) {
+	var result = 1;
+	for (var i = 0; i < numbers.length; i++) {
+		result = result * numbers[i]
+	}
+	return result;
+}
+
+var getMultiplicationResults = function(string) {
+	var result = [], numbersWithExclMarks = string.split('*');
+	for (var i = 0; i < numbersWithExclMarks.length; i++) {
+		var numberString = numbersWithExclMarks[i],
+		exclamationCount = getExclamationCount(numberString),
+		digitsToMultiply = getDigitsForMultiplication(parseInt(numberString), exclamationCount),
+		multipliedDigits = multiplyNumbersInArray(digitsToMultiply);
+		result.push(multipliedDigits);
+	}
+	return result;
+}
+
+var zeroes = function(string) {
+	var separateNumbersEvaluationResults = getMultiplicationResults(string),
+	stringEvaluationResult = multiplyNumbersInArray(separateNumbersEvaluationResults),
+	numberOfZeroesAtTheEnd = 0;
+
+	while (stringEvaluationResult % 10 == 0) {
+		numberOfZeroesAtTheEnd++;
+		stringEvaluationResult = stringEvaluationResult / 10;
+	}
+
+	return numberOfZeroesAtTheEnd;
+}
 }

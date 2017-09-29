@@ -45,4 +45,3 @@ var zeroes = function(string) {
 
 	return numberOfZeroesAtTheEnd;
 }
-}

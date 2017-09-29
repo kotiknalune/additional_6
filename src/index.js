@@ -1,36 +1,44 @@
 module.exports = function zeros(expression) {
-  var numbers = [];
-  for (var i = 0; i < expression.length; i++) {
-    var temporary = '';
-    var counter = 0;
-    var j = i;
-    while (true) {
-      if (expression[j] == '*' || expression[j] == '!' || expression[j] =='undefined') {
-        break;
-      } else {
-        temporary += expression[j];
-      }
-      counter++;
-      j++;
-    }
-    if (expression[i+counter] === '!' && expression[i+counter+1] === '!') {
-      numbers.push(factDouble(parseInt(temporary, 10)));
-      i += counter + 1;
-    } else if (expression[i+counter] === '!') {
-      numbers.push(fact(parseInt(temporary, 10)));
-      i += counter;
-    } else {
-      i+= counter;
-    }
-  }
-  function fact(n) {
-    if (n < 3) return n;
-    return n * fact(n-1);
-  }
-  function factDouble(n) {
-    if (n < 3) return n;
-    return n * factDouble(n-2);
-  }
-  var output = '' + numbers.reduce((acc, num) => acc*num, 1);
-  return output.split('').reduce((acc, num) => num == '0' ? acc++ : acc = acc);
+
+	var arr=expression.split("*")
+	var stack=""
+function Version(v){
+ 	var f = 1;
+ 	for(i = 2; i <= v;i++){
+ 	 	f *= i;
+  		stack += String(f).match(/0*$/)[0];
+  		while(f%10 == 0){
+  			f /= 10
+  		}
+ 		f = String(f);
+  		f = Number(f[f.length-1])
+ 	}
+	return f
+}
+function Version2 (v){
+	var f=1
+	for (i=v%2==0?2:3; i<=v; i+=2){
+		f *= i;
+  		stack += String(f).match(/0*$/)[0];
+  		while(f%10 == 0){
+  			f /= 10
+  		}
+ 		f = String(f);
+  		f = Number(f[f.length-1])
+ 	}
+	return f		
+}
+arr=arr.map(function (v,i)
+{
+	if(v.indexOf("!!")==-1){
+		return Version(parseInt(v))
+	}else{
+		return Version2(parseInt(v))
+	}
+})
+var numb=arr.reduce(function (a,b){
+return a*=b})
+while(numb%10==0)
+	{stack +="0"; numb=numb/10}
+return stack.length
 }

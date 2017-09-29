@@ -2,7 +2,7 @@ module.exports = function zeros(expression) {
   var numbers = [];
   for (var i = 0; i < expression.length; i++) {
     var temporary = '';
-    var count = 0;
+    var counter = 0;
     var j = i;
     while (true) {
       if (expression[j] == '*' || expression[j] == '!' || expression[j] =='undefined') {
@@ -10,17 +10,17 @@ module.exports = function zeros(expression) {
       } else {
         temporary += expression[j];
       }
-      count++;
+      counter++;
       j++;
     }
-    if (expression[i+count] === '!' && expression[i+count+1] === '!') {
+    if (expression[i+counter] === '!' && expression[i+counter+1] === '!') {
       numbers.push(factDouble(parseInt(temporary, 10)));
-      i += count + 1;
-    } else if (expression[i+count] === '!') {
+      i += counter + 1;
+    } else if (expression[i+counter] === '!') {
       numbers.push(fact(parseInt(temporary, 10)));
-      i += count;
+      i += counter;
     } else {
-      i+= count;
+      i+= counter;
     }
   }
   function fact(n) {
